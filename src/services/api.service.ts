@@ -1,8 +1,8 @@
-import axios from "axios";
-import { environment } from "../environments/environments";
+import axios from 'axios';
+import { environment } from '../environment/environment';
 
 const api = axios.create({
-  baseURL: environment.constants.api_domain
+  baseURL: environment.constants.api_domain,
 });
 
 export default api;
