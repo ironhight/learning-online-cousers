@@ -1,10 +1,10 @@
 let env;
 switch (process.env.NODE_ENV) {
-  case "development":
-    env = require("./environments.dev");
+  case 'development':
+    env = require('./environment.dev');
     break;
-  case "production":
-    env = require("./environments.prod");
+  case 'production':
+    env = require('./environment.prod');
     break;
   default:
     break;

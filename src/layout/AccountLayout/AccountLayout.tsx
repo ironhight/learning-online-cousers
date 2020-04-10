@@ -5,7 +5,7 @@ import * as React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-// import TextField from '@material-ui/core/TextField';
+import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
@@ -18,12 +18,8 @@ import Container from '@material-ui/core/Container';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import InputLabel from '@material-ui/core/InputLabel';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
 import IconButton from '@material-ui/core/IconButton';
-import FormControl from '@material-ui/core/FormControl';
-import { TextField } from '@material-ui/core';
-
+import { useHistory } from 'react-router-dom';
 // import { connect } from 'react-redux';
 // import queryString from 'query-string';
 
@@ -39,6 +35,7 @@ type State = {
   password: any;
   rePassword: any;
   showPassword: boolean;
+  validateError: boolean;
 };
 
 function Copyright() {
@@ -74,11 +71,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SignIn: React.FC<Props> = () => {
+const AccountLayout: React.FC<Props> = () => {
   const [values, setValues] = React.useState<State>({
     form: 'singin',
     loading: false,
     emailFromQueryString: '',
+    validateError: false,
     token: '',
     password: {
       hasShow: false,
@@ -94,18 +92,19 @@ const SignIn: React.FC<Props> = () => {
     },
     showPassword: false,
   });
-
-  const _handleChange = (prop: keyof State) => (
+  let history = useHistory();
+  const handleChange = (prop: keyof State) => (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setValues({ ...values, [prop]: event.target.value });
   };
 
-  const _handleSubmit = (e: any) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
     const { emailFromQueryString, password } = values;
     console.log('_handleSubmit -> password', password);
     console.log('_handleSubmit -> email', emailFromQueryString);
+    history.push('/');
   };
 
   const _handleClickShowPassword = () => {
@@ -115,6 +114,12 @@ const SignIn: React.FC<Props> = () => {
   const classes = useStyles();
 
   console.log('run signin');
+
+  // const inputProps = {
+  //   onblur : validateError= values.emailFromQueryString ?  true : false
+
+  // };
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -131,19 +136,24 @@ const SignIn: React.FC<Props> = () => {
             label="Email"
             type="text"
             variant="outlined"
-            onChange={_handleChange('emailFromQueryString')}
+            onChange={handleChange('emailFromQueryString')}
             margin="normal"
             required
             fullWidth
-            autoFocus
             autoComplete="email"
+            // helperText={
+            //   values.emailFromQueryString ? '' : 'email ko duoc trong'
+            // }
+            // error={values.emailFromQueryString ? false : true}
+            // onBlur={true}
+            // inputProps={onblur: true}
           />
           <TextField
             id="auth__form-control-input"
             label="Password"
             type={values.showPassword ? 'text' : 'password'}
             variant="outlined"
-            onChange={_handleChange('emailFromQueryString')}
+            onChange={handleChange('emailFromQueryString')}
             margin="normal"
             required
             fullWidth
@@ -173,14 +183,20 @@ const SignIn: React.FC<Props> = () => {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={_handleSubmit}
+            onClick={handleSubmit}
           >
             Sign In
           </Button>
+
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
                 Forgot password?
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link href="#" variant="body2">
+                {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
           </Grid>
@@ -193,4 +209,4 @@ const SignIn: React.FC<Props> = () => {
   );
 };
 
-export default SignIn;
+export default AccountLayout;

@@ -8,5 +8,6 @@ export const environment: any = {
     forgotpassword_url: 'http://localhost:3000/auth?form=changepassword',
     imageFolder: '',
     /* mqtt */
+    access_token_variable_name: 'Authorization',
   },
 };
