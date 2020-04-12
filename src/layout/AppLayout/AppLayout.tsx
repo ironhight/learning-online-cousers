@@ -15,14 +15,19 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import SettingsIcon from '@material-ui/icons/Settings';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import Collapse from '@material-ui/core/Collapse';
 
+import routes from '../../routes/sidebarRoutes';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
+
+import { Link } from 'react-router-dom';
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -86,13 +91,21 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
       padding: theme.spacing(3),
     },
+    nested: {
+      paddingLeft: theme.spacing(4),
+    },
   })
 );
 
-const AppLayout: React.FC<any> = () => {
+type Props = {
+  history: any;
+};
+
+const AppLayout: React.FC<Props> = (props) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
+  const [openList, setOpenList] = React.useState({});
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -102,9 +115,20 @@ const AppLayout: React.FC<any> = () => {
     setOpen(false);
   };
 
+  const handleToggleList = (e: any): void => {
+    setOpenList({ [e]: !openList[e] });
+    console.log(e);
+  };
+
+  const activeMenu = routes.filter(
+    (route) => props.history.location.pathname.indexOf(route.path) > -1
+  );
+
+  // console.log('activeMenu', props);
   return (
     <div className={classes.root}>
       <CssBaseline />
+
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, {
@@ -124,10 +148,11 @@ const AppLayout: React.FC<any> = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Mini variant drawer
+            {activeMenu.length > 0 ? activeMenu[0].title : ''}
           </Typography>
         </Toolbar>
       </AppBar>
+
       <Drawer
         variant="permanent"
         className={clsx(classes.drawer, {
@@ -146,35 +171,72 @@ const AppLayout: React.FC<any> = () => {
             {theme.direction === 'rtl' ? (
               <ChevronRightIcon />
             ) : (
-              <ChevronLeftIcon />
+              <MenuOpenIcon />
             )}
           </IconButton>
         </div>
         <Divider />
         <List>
-          {['Overview', 'Starred', 'Send email', 'Drafts'].map(
-            (text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
+          {routes.map((route: any, index: number) =>
+            !route.childrens ? (
+              <ListItem
+                button
+                key={route.nameEn}
+                component={Link}
+                to={route.path}
+              >
+                <ListItemIcon>{route.icon}</ListItemIcon>
+                <ListItemText primary={route.nameEn} />
               </ListItem>
+            ) : (
+              <div key={index}>
+                <ListItem
+                  button
+                  key={route.nameEn}
+                  component={Link}
+                  to={route.path}
+                  onClick={() => handleToggleList(route.nameEn)}
+                >
+                  <ListItemIcon>{route.icon}</ListItemIcon>
+                  <ListItemText primary={route.nameEn} />
+                  {openList[route.nameEn] ? <ExpandLess /> : <ExpandMore />}
+                </ListItem>
+
+                <Collapse
+                  in={openList[route.nameEn]}
+                  timeout="auto"
+                  unmountOnExit
+                >
+                  <List component="div" disablePadding>
+                    {route.childrens.map((routeChild: any, index: number) => (
+                      <ListItem
+                        button
+                        className={classes.nested}
+                        component={Link}
+                        to={routeChild.path}
+                        key={index}
+                      >
+                        <ListItemIcon>{routeChild.icon}</ListItemIcon>
+                        <ListItemText primary={routeChild.nameEn} />
+                      </ListItem>
+                    ))}
+                  </List>
+                </Collapse>
+              </div>
             )
           )}
         </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+
+        <List style={{ position: 'absolute', bottom: '0', width: '100%' }}>
+          <ListItem button key="Setting" component={Link} to="/setting">
+            <ListItemIcon>
+              <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Setting" />
+          </ListItem>
         </List>
       </Drawer>
+
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Typography paragraph>
