@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import clsx from 'clsx';
 import {
   createStyles,
@@ -27,7 +27,19 @@ import Collapse from '@material-ui/core/Collapse';
 import routes from '../../routes/sidebarRoutes';
 import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 
-import { Link } from 'react-router-dom';
+import { Switch, Route, Link, Redirect } from 'react-router-dom';
+
+//component
+const ContainerCousers = lazy(() =>
+  import('../../components/cousers/ContainerCousers')
+);
+const ContainerDashboard = lazy(() =>
+  import('../../components/dashboard/ContainerDashboard')
+);
+const ContainerUsers = lazy(() =>
+  import('../../components/users/ContainerUsers')
+);
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -239,35 +251,17 @@ const AppLayout: React.FC<Props> = (props) => {
 
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-          dolor purus non enim praesent elementum facilisis leo vel. Risus at
-          ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum
-          quisque non tellus. Convallis convallis tellus id interdum velit
-          laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed
-          adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-          integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-          eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-          quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-          vivamus at augue. At augue eget arcu dictum varius duis at consectetur
-          lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
-          faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-          ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-          elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse
-          sed nisi lacus sed viverra tellus. Purus sit amet volutpat consequat
-          mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
-          risus sed vulputate odio. Morbi tincidunt ornare massa eget egestas
-          purus viverra accumsan in. In hendrerit gravida rutrum quisque non
-          tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant
-          morbi tristique senectus et. Adipiscing elit duis tristique
-          sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Switch>
+            <Route path="/dashboard" exact component={ContainerDashboard} />
+            <Route
+              path={['/cousers', '/cousers/categories']}
+              exact
+              component={ContainerCousers}
+            />
+            <Route path="/users" exact component={ContainerUsers} />
+          </Switch>
+        </Suspense>
       </main>
     </div>
   );

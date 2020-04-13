@@ -51,7 +51,7 @@ class Api {
     return headersConfig;
   }
 
-  // cruid api
+  // crud api
   post(
     options: { data: any; url?: string; setHeader?: boolean },
     callback: (status: any, data: any) => void
