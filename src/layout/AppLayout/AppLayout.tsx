@@ -30,8 +30,8 @@ import MenuOpenIcon from '@material-ui/icons/MenuOpen';
 import { Switch, Route, Link, Redirect } from 'react-router-dom';
 
 //component
-const ContainerCousers = lazy(() =>
-  import('../../components/cousers/ContainerCousers')
+const ContainerCourses = lazy(() =>
+  import('../../components/courses/ContainerCourses')
 );
 const ContainerDashboard = lazy(() =>
   import('../../components/dashboard/ContainerDashboard')
@@ -255,9 +255,9 @@ const AppLayout: React.FC<Props> = (props) => {
           <Switch>
             <Route path="/dashboard" exact component={ContainerDashboard} />
             <Route
-              path={['/cousers', '/cousers/categories']}
+              path={['/courses', '/courses/categories']}
               exact
-              component={ContainerCousers}
+              component={ContainerCourses}
             />
             <Route path="/users" exact component={ContainerUsers} />
           </Switch>

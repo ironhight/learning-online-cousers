@@ -15,15 +15,15 @@ const sidebarRoutes = [
     icon: <DashboardIcon />,
   },
   {
-    path: '/cousers',
+    path: '/courses',
     nameVi: 'Khóa học',
-    nameEn: 'Cousers',
-    title: 'Cousers',
+    nameEn: 'courses',
+    title: 'courses',
     icon: <ChromeReaderModeIcon />,
     childrens: [
-      { path: '/cousers', nameEn: 'List', icon: <ListAltIcon /> },
+      { path: '/courses', nameEn: 'List', icon: <ListAltIcon /> },
       {
-        path: '/cousers/categories',
+        path: '/courses/categories',
         nameEn: 'Categories',
         icon: <CategoryIcon />,
       },

@@ -1,7 +1,7 @@
 import React from 'react';
 
-function CategoriesCouser() {
+function CategoriesCourse() {
   return <div>categories</div>;
 }
 
-export default CategoriesCouser;
+export default CategoriesCourse;

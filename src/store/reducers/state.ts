@@ -1,15 +1,15 @@
-import { CouserModel } from '../../models/couser.model';
+import { CourseModel } from '../../models/course.model';
 import { ErrorModel } from '../../models/common/error.model';
 
 export interface RootState {
   dashboard: AppState.DashboardState;
-  couser: AppState.CouserState;
+  course: AppState.CourseState;
 }
 
 export declare module AppState {
   export type DashboardState = {};
-  export type CouserState = {
-    data: CouserModel;
+  export type CourseState = {
+    data: CourseModel;
     error: ErrorModel;
     loading: boolean;
   };

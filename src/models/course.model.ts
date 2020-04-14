@@ -1,6 +1,6 @@
 import { Deserializable } from './common/deserializable.model';
 
-export class CouserModel implements Deserializable<CouserModel> {
+export class CourseModel implements Deserializable<CourseModel> {
   maKhoaHoc: string;
   biDanh: string;
   tenKhoaHoc: string;
@@ -13,7 +13,7 @@ export class CouserModel implements Deserializable<CouserModel> {
   maDanhMucKhoaHoc: string;
   taiKhoanNguoiTao: string;
 
-  deserialize?(input: any): CouserModel {
+  deserialize?(input: any): CourseModel {
     this.maKhoaHoc = input.maKhoaHoc ?? '';
     this.biDanh = input.biDanh ?? '';
     this.tenKhoaHoc = input.tenKhoaHoc ?? '';
