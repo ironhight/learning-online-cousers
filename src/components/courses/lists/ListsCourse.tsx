@@ -49,7 +49,7 @@ const ListsCourse: React.FC<any> = (props) => {
               <IconButton>
                 <UpdateIcon />
               </IconButton>
-              <IconButton>
+              <IconButton onClick={() => props.deleteCourse(row.maKhoaHoc)}>
                 <DeleteOutlineIcon />
               </IconButton>
             </TableCell>
